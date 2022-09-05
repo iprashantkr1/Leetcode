@@ -19,12 +19,15 @@ public:
         while(curr!=NULL || !st.empty()){
             while(curr!=NULL){
                 res.push_back(curr->val);
-                st.push(curr);
+                if(curr->right!=NULL)
+                    st.push(curr->right);
                 curr=curr->left;
             }
-            curr=st.top();
-            st.pop();
-            curr=curr->right;
+            if(!st.empty())
+            {
+                curr=st.top();
+                st.pop();
+            }
         }
         
         return res;
