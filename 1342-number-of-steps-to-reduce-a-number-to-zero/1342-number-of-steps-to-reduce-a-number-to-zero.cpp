@@ -7,7 +7,7 @@ public:
         if(num==0)  return 0;
         if(num==1)  return 1;
         
-        return numberOfSteps(num/2) + (num%2==0 ? 1:2);
+        return numberOfSteps(num>>1) + (num%2==0 ? 1:2);
         
         
         
