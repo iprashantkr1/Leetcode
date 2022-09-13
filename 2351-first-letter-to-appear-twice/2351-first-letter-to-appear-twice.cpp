@@ -7,9 +7,10 @@ public:
         for(int i=0;i<s.length();i++)
         {
             arr[s[i]-'a']++;
+            
             if(arr[s[i]-'a'] > 1)
                 return s[i];
         }  
-        return ' ';
+        return 'z';
     }
 };
