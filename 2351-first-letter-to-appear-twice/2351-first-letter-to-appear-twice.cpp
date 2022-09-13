@@ -2,18 +2,14 @@ class Solution {
 public:
     char repeatedCharacter(string s) {
         
-        unordered_set<char> st;
-        st.insert(s[0]);
+        int arr[26]={0};
         
-        for(int i=1;i<s.length();i++)
+        for(int i=0;i<s.length();i++)
         {
-            if(st.find(s[i]) == st.end())
-                st.insert(s[i]);
-            else    
+            arr[s[i]-'a']++;
+            if(arr[s[i]-'a'] > 1)
                 return s[i];
-            
-                
-        }
+        }  
         return ' ';
     }
 };
