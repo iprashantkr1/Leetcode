@@ -3,23 +3,21 @@ public:
     int pivotIndex(vector<int>& nums) {
         
         int n=nums.size();
-        for(int i=1;i<n;i++)
-            nums[i]+=nums[i-1];
+        int sum=0 , leftsum=0;
+        for(int i=0;i<n;i++)
+            sum+=nums[i];
         
-        
-        if(nums[n-1]-nums[0] == 0)
-            return 0;
-        
-        for(int i=1;i<n;i++)
-            if(nums[i-1]==nums[n-1]-nums[i])
+        for(int i=0;i<n;i++)
+        {
+            if(leftsum == sum-leftsum-nums[i])
                 return i;
+            leftsum+=nums[i];
+        }
         
         return -1;
         
     }
 };
 
-/*[-1,-1,1,1,0,0]
--1,-2,-1,0,0,0
-*/
+
 
