@@ -22,17 +22,9 @@ public:
         
         int ctr=2;
         
-        for(int i=2;i<n;i++)
-            if(n%i==0)
-            {
-                ctr++;
-                if(ctr>3)
-                    return false;
-            } 
+        for(int i=2;i<n && ctr<=3;i++)
+            ctr+= n%i==0 ;
         
-        if(ctr<=2)
-            return false;
-        
-        return true;
+        return ctr==3;
     }
 };
