@@ -8,7 +8,7 @@ public:
     
     int findGCD(vector<int>& nums) {
         
-        int small=INT_MAX , large=INT_MIN;
+        int small=1001 , large=0;
          for(int x : nums)
          {
              if(x<small)
