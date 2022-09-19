@@ -4,9 +4,9 @@ public:
         
         int ctr=0 , large=0;
         
-        for(int i=0;i<r.size();i++)
+        for(const auto& i:r)
         {
-            int side=min(r[i][0],r[i][1]);
+            int side=min(i[0],i[1]);
             if(side > large)
             {
                 ctr=1;
