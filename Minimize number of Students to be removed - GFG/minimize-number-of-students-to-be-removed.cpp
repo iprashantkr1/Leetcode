@@ -13,17 +13,10 @@ class Solution {
         for(int i=0;i<N;i++)
         {
             int ind=lower_bound(arr.begin(),arr.end(),H[i])-arr.begin();
-            //cout<<ind;
             if(ind==arr.size())
-            {
                 arr.push_back(H[i]);
-                //cout<<"if";
-            }
             else
-            {
                 arr[ind]=H[i];
-                //cout<<"else";
-            }
                 
         }
         return N-arr.size();
