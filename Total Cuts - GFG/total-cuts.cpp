@@ -10,18 +10,21 @@ using namespace std;
 
 class Solution{
 public:
-    int totalCuts(int n,int k,vector<int> &arr){       
-        int c=0;
-        multiset<int>ms1(arr.begin(),arr.end());
-        int maxi=arr[0];
-        for(int i=0;i<n-1;i++){
-            maxi=max(arr[i],maxi);
-            auto p=ms1.find(arr[i]);
-            ms1.erase(p);
-            int l=maxi,r=*(ms1.begin());
-            c+=((l+r)>=k);
+    int totalCuts(int N,int K,vector<int> &A){
+        // Code here
+        vector<int> pref(N, 0);
+        pref[N-1] = A[N-1];
+        for(int i = N-2; i>=0 ; i--){
+            pref[i] = min(pref[i+1],A[i]);
         }
-        return c;
+        int maxi = A[0];
+        int ans = 0;
+        for(int i = 1; i < N; i++){
+            if(maxi + pref[i] >= K)
+                ans++;
+            maxi = max(maxi, A[i]);
+        }
+        return ans;
     }
 };
 
