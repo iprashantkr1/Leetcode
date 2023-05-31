@@ -9,153 +9,56 @@ using namespace std;
 
 class Solution{   
 public:
-    string removeBrackets(string s)
-{
-        int i = 0;
-        vector<int>brackets;
-        vector<int>vis(s.size(),1);
-        while(i < s.size())
-        {
-            if(s[i] == '(')
-            {
-                brackets.push_back(i);
-                i++;
-            }
-            else if(s[i] ==')')
-            {
-                int ind = brackets.back();
-                brackets.pop_back();
-                int j = i + 1;
-                while(brackets.size() && (brackets.back() == ind - 1) && (s[j] == ')') )
-                {
-                    vis[ind-1] = 0;
-                    vis[j] = 0;
-                    brackets.pop_back();
-                    j++;
-                    ind--;
-                }
-                i = j;
-            }
-            else i++;
-        }
-
-        string temp;
-        for(int i = 0 ; i < s.size() ; i++)
-        {
-            if(vis[i])
-            {
-                temp.push_back(s[i]);
-            }
-        }
-
-        s = temp;
-
-        
-        int n=s.size();
-        int ans[n+1];
-        memset(ans,1,sizeof(ans));
-        int lasta[n+1];
-        int nxta[n+1];
-
-
-        int l=-1;
-        for(int i=0;i<n;i++){
-            lasta[i]=l;
-            if(s[i]=='*'||s[i]=='+'||s[i]=='-'||s[i]=='/')
-                    l=s[i];
-            if(s[i] =='(')
-                l = -1;
-        }
-        l=-1;
-        for(int i=n-1;i>=0;i--){
-            nxta[i]=l;
-            if(s[i]=='*'||s[i]=='+'||s[i]=='-'||s[i]=='/')
-                    l=s[i];
-            if(s[i] ==')')
-                l = -1;
-        }
-
-
+    string removeBrackets(string Exp){    
         stack<int> st;
-        int mp[256]={0};
-        vector<vector<int>>sign(256);
-        for(int i = 0 ; i < 256 ; i++)
+        int n=Exp.length();
+        vector<bool> vis(n,0);
+        for(int i=0;i<n;i++)
         {
-            sign[i].push_back(-1);
-        }
-        vector<char> operand={'*','+','-','/'};
-
-        for(int p=0;p<s.size();p++)
-        {
-            for(auto j:operand){
-                mp[j]=0;
-                if(j==s[p])
-                    sign[j].push_back(p);
-            }
-            if(s[p]=='(')
-                st.push(p);
-
-            else if(s[p]==')'){
-                int i=st.top();
-                int j=p;
-
-                int nxt=nxta[j];
-                int last=lasta[i];
+            if(Exp[i]=='(' || Exp[i]=='+' || Exp[i]=='-' || Exp[i]=='/' || Exp[i]=='*')
+                st.push(i);
+            else if(Exp[i]==')')
+            {
+                bool plus=false,min=false,divi=false,mul=false;
+                while(!st.empty() && Exp[st.top()]!='(')
+                {
+                    int curr=st.top();
+                    st.pop();
+                    if(Exp[curr]=='+') plus=true;
+                    if(Exp[curr]=='-') min=true;
+                    if(Exp[curr]=='/') divi=true;
+                    if(Exp[curr]=='*') mul=true;
+                }
+                
+                int j=st.top();
                 st.pop();
-                for(auto e:operand){
-                    if(sign[e].back()>=i){
-                        if(sign[e].size() > 1)
-                        {
-                            sign[e].pop_back();
-                        }
-                        mp[e] = 1;
-                    }
-                }
-                int ok=0;
                 
-                if(mp['+']==0&&mp['*']==0&&mp['-']==0&&mp['/']==0)
-                    ok=1;
-               
-                if(last=='/'){
-                    ok = 0;
+                int prev=i;
+                i++;
+                while(i<n && !st.empty() && Exp[st.top()]=='(' && Exp[i]==')')
+                {
+                    vis[i]=vis[st.top()]=true;
+                    st.pop();
+                    i++;
                 }
+                i--;
+                if(i+1<n && Exp[i+1]=='*')
+                    if(divi || plus || min) continue;
+                if(i+1<n && Exp[i+1]=='/')
+                    if(divi || plus || min || mul) continue;
                 
-                if(last==-1&&nxt==-1)
-                    ok=1;
-                else if((char)(last) != '+' && (mp['+'] == 1 || mp['-'] == 1))
-                {
-                    ok = 0;
-                }
-                else if(((char)(nxt) == '/' || (char)(nxt) == '*') && (mp['+'] == 1 || mp['-'] == 1))
-                {
-                    ok = 0;
-                }          
-                else if((char)(last) == '*' && mp['+'] == 0 && mp['-'] == 0)
-                {
-                    ok = 1;
-                }
-                else if((char)(nxt) == '*' && mp['+'] == 0 && mp['-'] == 0)
-                {
-                    ok = 1;
-                }
-                else{
-                    if((last==-1||last=='+'||last=='-')&&(nxt==-1||nxt=='+'||nxt=='-'))
-                        ok=1;
-                }
-                if(ok==1){
-                    ans[i]=0;
-                    ans[j]=0;
-                }
-                               
+                if(st.empty() || (!plus && !min && !mul && !divi)) vis[prev]=vis[j]=true;
+                else if(Exp[st.top()]=='+') vis[prev]=vis[j]=true;
+                else if(Exp[st.top()]=='-' && !plus && !min) vis[prev]=vis[j]=true;
+                else if(Exp[st.top()]=='*' && ((divi || mul) && !plus && !min)) vis[prev]=vis[j]=true;
             }
         }
-        string res="";
-        for(int i=0;i<n;i++){
-            if(ans[i]){
-                res.push_back(s[i]);
-            }
+        string ans="";
+        for(int i=0;i<n;i++)
+        {
+            if(!vis[i]) ans.push_back(Exp[i]); 
         }
-        return res;
+        return ans;
     }
 };
 
