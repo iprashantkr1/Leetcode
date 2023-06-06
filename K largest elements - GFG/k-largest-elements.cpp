@@ -12,16 +12,18 @@ class Solution
     vector<int> kLargest(int arr[], int n, int k)
     {
         // code here
-        priority_queue<int>pq(arr,arr+n);
+        priority_queue<int>pq(arr,arr+n); //O(n)
         
         vector<int>res;
-        for(int i=0;i<k;i++)
+        for(int i=0;i<k;i++) //O(k)
         {
             res.push_back(pq.top());
-            pq.pop();
+            pq.pop(); //O(logn)
         }
         return res;
     }
+    
+    //Time: O(n+klogn)
 };
 
 //{ Driver Code Starts.
