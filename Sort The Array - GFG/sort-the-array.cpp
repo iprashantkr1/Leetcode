@@ -7,7 +7,11 @@ class Solution{
     public:
     vector<int> sortArr(vector<int>arr, int n){
     //complete the function here
-        sort(arr.begin(),arr.end());
+        priority_queue<int,vector<int>,greater<int>>pq(arr.begin(),arr.end());
+        for(int i=0;i<n;i++){
+            arr[i]=pq.top();
+            pq.pop();
+        }
         return arr;
     }
 };
