@@ -33,11 +33,22 @@ class Solution {
   public:
     int stockBuyAndSell(int n, vector<int> &prices) {
         // code here
-        int profit=0;
-        for(int i=1;i<n;i++)
-            if(prices[i]>prices[i-1])
-                profit+=(prices[i]-prices[i-1]);
-                
+        int i=0 , buy=0, sell=0, profit=0;
+        while(i<n-1)
+        {
+            while(i<n-1 && prices[i+1]<=prices[i])
+                i++;
+            
+            buy=i++;
+            
+            while(i<n && prices[i]>=prices[i-1])
+                i++;
+            
+            sell=i-1;
+            
+            profit+= (prices[sell]-prices[buy]);
+        }
+        
         return profit;
     }
 };
