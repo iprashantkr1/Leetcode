@@ -16,7 +16,7 @@ public:
                 first=true;
             else if(first && !second && preSum==(2*part))
                 second=true;
-            else if(first && second && !third && preSum==(3*part))
+            else if(first && second && preSum==(3*part))
                 third=true;
         }
         return (first && second && third);
